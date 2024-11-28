@@ -26,6 +26,9 @@ install_remote <- function(remote,
                            type,
                            ...) {
 
+  print("Remote install disabled due to security policy.")
+  return(NULL)
+  
   stopifnot(is.remote(remote))
 
   package_name <- remote_package_name(remote)
