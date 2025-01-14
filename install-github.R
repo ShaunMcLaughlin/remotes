@@ -82,6 +82,7 @@ function(...) {
   #' @noRd
   NULL
   
+  #' @importFrom utils download.file
   
   bioconductor <- local({
   
@@ -121,7 +122,8 @@ function(...) {
       "4.0"  = package_version("3.12"),
       "4.1"  = package_version("3.14"),
       "4.2"  = package_version("3.16"),
-      "4.3"  = package_version("3.18")
+      "4.3"  = package_version("3.18"),
+      "4.4"  = package_version("3.20")
       # Do not include R 4.4 <-> Bioc 3.19, because R 4.4 will use
       # Bioc 3.20 eventually.
     )
@@ -4026,7 +4028,7 @@ function(...) {
     # Otherwise lookup the package name from the remote DESCRIPTION file
     desc <- github_DESCRIPTION(username = remote$username, repo = remote$repo,
       subdir = remote$subdir, host = remote$host, ref = remote$ref,
-      pat = remote$auth_token %||% github_pat(), use_curl = use_curl)
+      pat = remote$auth_token, use_curl = use_curl)
   
     if (is.null(desc)) {
       return(NA_character_)
@@ -4043,7 +4045,7 @@ function(...) {
   remote_sha.github_remote <- function(remote, ..., use_curl = !is_standalone() && pkg_installed("curl")) {
     tryCatch(
       github_commit(username = remote$username, repo = remote$repo,
-        host = remote$host, ref = remote$ref, pat = remote$auth_token %||% github_pat(), use_curl = use_curl),
+        host = remote$host, ref = remote$ref, pat = remote$auth_token, use_curl = use_curl),
   
       # 422 errors most often occur when a branch or PR has been deleted, so we
       # ignore the error in this case
